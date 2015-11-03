@@ -158,6 +158,10 @@ unsigned Disassembler::decodeInstruction(unsigned Address,
   if (!(DA->getInstruction(*Inst, InstSize, NewBytes, Address,
         nulls(), nulls()))) {
     printError("Unknown instruction encountered, instruction decode failed! ");
+    Errs << "Instruction (Opcode " << Inst->getOpcode() << "): ";
+    Inst->dump_pretty(Errs);
+    Errs << "\n";
+    Errs.flush();
     
     return 1;
     // Instructions[Address] = NULL;
