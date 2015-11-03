@@ -158,9 +158,12 @@ unsigned Disassembler::decodeInstruction(unsigned Address,
   if (!(DA->getInstruction(*Inst, InstSize, NewBytes, Address,
         nulls(), nulls()))) {
     printError("Unknown instruction encountered, instruction decode failed! ");
-    Errs << "Instruction (Opcode " << Inst->getOpcode() << "): ";
-    Inst->dump_pretty(Errs);
-    Errs << "\n";
+    std::stringstream ss;
+    ss << "Instruction at address " << std::hex << Address << " (4 bytes): ";
+    for(size_t i=Address; i<Address + 4; ++i) {
+        ss << std::bitset<8>(NewBytes[i]);
+    }
+    Errs << ss.str() << "\n";
     Errs.flush();
     
     return 1;
